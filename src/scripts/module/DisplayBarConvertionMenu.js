@@ -98,12 +98,20 @@ export default class DisplayBarConvertionMenu extends FormApplication {
     event.preventDefault();
     for (var i = 0; i < actors.length; i++) {
       const actor = actors[i];
-      const disposition = getDisplayMode(actor.token.disposition);
+      const tokenToCheck = actor.token
+        ? actor.token
+        : actor.getActiveTokens()?.length > 0
+        ? actor.getActiveTokens()[0]
+        : undefined;
+      if (!tokenToCheck) {
+        return;
+      }
+      const disposition = getDisplayMode(tokenToCheck.document.disposition);
       const from = translateCustomDisplayModes(this.settings.from, disposition);
       const to = translateCustomDisplayModes(this.settings.to, disposition);
       if (this.dispositions[disposition]) {
-        if (from === 60 || actor.token.displayBars === from) {
-          await Actor.updateDocuments([{ _id: actor.id, ["token.displayBars"]: to }]);
+        if (from === 60 || tokenToCheck.document.displayBars === from) {
+          await Actor.updateDocuments([{ _id: actor.id, ["token.document.displayBars"]: to }]);
           const activeTokens = actor.getActiveTokens();
           for (var j = 0; j < activeTokens.length; j++) {
             await activeTokens[j].document.update({

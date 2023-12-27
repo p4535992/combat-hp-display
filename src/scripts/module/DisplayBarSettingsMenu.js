@@ -4,6 +4,7 @@ export default class DisplayBarSettingsMenu extends FormApplication {
   constructor() {
     super({}, { title: game.i18n.localize("combat-hp-display.hpDisplaySettings.title") });
     this.displaySettings = {
+      outOfCombat: game.settings.get("combat-hp-display", "out-of-combat-display"),
       combat: game.settings.get("combat-hp-display", "combat-display"),
     };
 
@@ -19,7 +20,7 @@ export default class DisplayBarSettingsMenu extends FormApplication {
     const defaults = super.defaultOptions;
     const overrides = {
       height: "auto",
-      width: 300,
+      width: 400,
       id: "resource-display-menu",
       template: useTemplatesPath("settingsMenu.hbs"),
       closeOnSubmit: false,
@@ -34,6 +35,7 @@ export default class DisplayBarSettingsMenu extends FormApplication {
 
   getData() {
     return {
+      outOfCombat: this.displaySettings.outOfCombat,
       combat: this.displaySettings.combat,
       displayChoisesFrom: this.displayChoises,
       displayChoisesTo: this.displayChoises,
@@ -56,6 +58,7 @@ export default class DisplayBarSettingsMenu extends FormApplication {
     $(html)
       .find("#save")
       .click((event) => {
+        game.settings.set("combat-hp-display", "out-of-combat-display", this.displaySettings.outOfCombat);
         game.settings.set("combat-hp-display", "combat-display", this.displaySettings.combat);
         this.close();
       });

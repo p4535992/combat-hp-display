@@ -1,4 +1,4 @@
-# Rarity Colors
+# Combat HP Display [WORK IN PROGRESS]
 
 ![Latest Release Download Count](https://img.shields.io/github/downloads/p4535992/foundryvtt-combat-hp-display/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge)
 

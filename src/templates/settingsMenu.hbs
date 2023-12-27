@@ -1,7 +1,29 @@
  <form class={{cssClass}} autocomplete="off" onsubmit="event.preventDefault();">
     <div class="flexrow display-settings-titles">
+        <label class="flex1" style="text-align: center;"><strong>{{localize "combat-hp-display.hpDisplaySettings.outOfCombat"}}</strong></label>
         <label class="flex1" style="text-align: center;"><strong>{{localize "combat-hp-display.hpDisplaySettings.inCombat"}}</strong></label>
         {{#if barbrawlActive}}<label class="flex0 gm-label"><strong>{{localize "combat-hp-display.hpDisplaySettings.gmOnly"}}</strong></label>{{/if}}
+    </div>
+    <div class="flexrow">
+    <div class="flexcol">
+        {{> "modules/combat-hp-display/templates/partials/tokenDisplayValues2.hbs" 
+            type="friendly" 
+            outOfCombatSelected=outOfCombat.friendly.value 
+            gmOnly=combat.friendly.gmOnly
+            barbrawl=barbrawlActive
+        }}
+        {{> "modules/combat-hp-display/templates/partials/tokenDisplayValues2.hbs" 
+            type="neutral" 
+            outOfCombatSelected=outOfCombat.neutral.value  
+            gmOnly=combat.neutral.gmOnly
+            barbrawl=barbrawlActive
+        }}
+        {{> "modules/combat-hp-display/templates/partials/tokenDisplayValues2.hbs" 
+            type="hostile"
+            outOfCombatSelected=outOfCombat.hostile.value 
+            gmOnly=combat.hostile.gmOnly
+            barbrawl=barbrawlActive
+        }}
     </div>
     <div class="flexcol">
         {{> "modules/combat-hp-display/templates/partials/tokenDisplayValues.hbs" 
@@ -22,6 +44,7 @@
             gmOnly=combat.hostile.gmOnly
             barbrawl=barbrawlActive
         }}
+    </div>
     </div>
     <footer class="sheet-footer flexrow">
         <button id="save"><i class="far fa-save"></i>Save Changes</button>

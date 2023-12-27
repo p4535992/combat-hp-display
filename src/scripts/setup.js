@@ -21,6 +21,19 @@ export const registerGameSettings = () => {
     });
   }
 
+  game.settings.register("combat-hp-display", "out-of-combat-display", {
+    name: "Out Of Combat HP Display",
+    hint: "The HP Display behehavior used when not in combat",
+    scope: "world",
+    config: false,
+    type: Object,
+    default: {
+      friendly: { value: 0, gmOnly: false },
+      neutral: { value: 0, gmOnly: false },
+      hostile: { value: 0, gmOnly: false },
+    },
+  });
+
   game.settings.register("combat-hp-display", "combat-display", {
     name: "Combat HP Display",
     hint: "The HP Display behehavior used when in combat",
@@ -37,6 +50,24 @@ export const registerGameSettings = () => {
 
 export const migrateDataStructures = async () => {
   if (game.user.isGM) {
+    if (typeof game.settings.get("combat-hp-display", "out-of-combat-display")?.valueOf() === "number") {
+      const outOfCombat = game.settings.get("combat-hp-display", "out-of-combat-display");
+      game.settings.set("combat-hp-display", "out-of-combat-display", {
+        friendly: { value: outOfCombat, gmOnly: false },
+        neutral: { value: outOfCombat, gmOnly: false },
+        hostile: { value: outOfCombat, gmOnly: false },
+      });
+    }
+
+    const outOfCombat = game.settings.get("combat-hp-display", "out-of-combat-display");
+    if (outOfCombat.friendly.value === undefined) {
+      await game.settings.set("combat-hp-display", "out-of-combat-display", {
+        friendly: { value: outOfCombat.friendly.value ?? outOfCombat.friendly, gmOnly: false },
+        neutral: { value: outOfCombat.neutral.value ?? outOfCombat.neutral, gmOnly: false },
+        hostile: { value: outOfCombat.hostile.value ?? outOfCombat.hostile, gmOnly: false },
+      });
+    }
+
     if (typeof game.settings.get("combat-hp-display", "combat-display")?.valueOf() === "number") {
       const inCombat = game.settings.get("combat-hp-display", "combat-display");
       await game.settings.set("combat-hp-display", "combat-display", {
