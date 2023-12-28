@@ -35,3 +35,11 @@ Hooks.on("deleteCombat", async (combat) => {
 Hooks.on("deleteCombatant", async (combatant) => {
   await deleteCombatantUpdate(combatant);
 });
+
+/* ------------------------------------ */
+/* Other Hooks							*/
+/* ------------------------------------ */
+
+Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
+  registerPackageDebugFlag(CONSTANTS.MODULE_ID);
+});
